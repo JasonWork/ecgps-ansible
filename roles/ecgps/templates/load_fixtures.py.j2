@@ -1,0 +1,14 @@
+#!/usr/bin/ python
+import glob
+from subprocess import Popen
+
+fixtures_dir = "{{ project_root }}/ecgps/dev_fixtures"
+fixtures = glob.glob("{0}/*.json".format(fixtures_dir))
+
+env_python = "{{ env_dir }}/bin/python"
+
+for fixture in fixtures:
+    cmd = "{0} {{ project_root }}/ecgps/manage.py loaddata dev_fixtures/{1}".format(env_python, fixture)
+    process = Popen("{0}".format(cmd), shell=True)
+    process.communicate()
+

@@ -4,7 +4,11 @@
   tags: provision, nginx
 
 - name: Create the ecgps conf file.
-  copy: src=ecgps.conf dest=/etc/nginx/sites-available
+  template: src=ecgps.conf.j2 dest=/etc/nginx/sites-available/ecgps.conf
+  tags: provision, nginx
+
+- name: copy ecgps.conf file to the conf.d directory.
+  shell: "cp /etc/nginx/sites-available/ecgps.conf /etc/nginx/conf.d/"
   tags: provision, nginx
 
 - name: check if ecgps was added to sites enabled

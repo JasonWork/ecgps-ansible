@@ -1,5 +1,20 @@
 import os
 
+
+DATABASES = {
+
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': '{{ pg_database }}',
+        'USER': '{{ pg_username }}',
+        'PASSWORD': '{{ pg_password }}',
+        'HOST': '{{ inventory_hostname }}',
+        'PORT': '5432',
+    },
+
+}
+
+
 {% if machine == 'dev' %}
 DATABASES = {
 
@@ -16,16 +31,17 @@ DATABASES = {
 DEBUG = True
 {% endif %}
 
-INTERNAL_IPS = ('127.0.0.1',)
+#INTERNAL_IPS = ('127.0.0.1',)
 
-REDIS_HOST = 'localhost'
+REDIS_HOST = '{{ inventory_hostname }}'
+MONGO_HOST = '{{ inventory_hostname }}'
 
 EMAIL_PORT = 25
 EMAIL_SUBJECT_PREFIX = '[eClinical GPS Dev] '
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'ecgps@localhost'
-SERVER_EMAIL = 'ecgps@localhost'
-EMAIL_HOST = 'localhost'
+DEFAULT_FROM_EMAIL = 'ecgps@{{ inventory_hostname }}'
+SERVER_EMAIL = 'ecgps@{{ inventory_hostname }}'
+EMAIL_HOST = '{{ inventory_hostname }}'
 EMAIL_HOST_USER = 'ecgps'
 EMAIL_HOST_PASSWORD = ''
 
@@ -47,7 +63,7 @@ CELERY_SEND_TASK_ERROR_EMAILS = False
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': '127.0.0.1:6379',
+        'LOCATION': '{{ inventory_hostname }}:6379',
         'OPTIONS': {
             'DB': 5,
         },
@@ -56,7 +72,7 @@ CACHES = {
 
 USE_TZ = False
 
-WF_SFTP_PROD_SERVER = 'localhost' #'safetrans.wellsfargo.com'
+WF_SFTP_PROD_SERVER = '{{ inventory_hostname }}' #'safetrans.wellsfargo.com'
 WF_SFTP_LOGIN = ''
 WF_SFTP_PASSWORD = ''
 WF_FILE_LOCATION = '/tmp/'
@@ -69,10 +85,9 @@ BROKER_PORT = None
 BROKER_USER = None
 BROKER_PASSWORD = None
 BROKER_VHOST = None
-BROKER_URL = "redis://localhost:6379/2"
+BROKER_URL = "redis://{{ inventory_hostname }}:6379/2"
 
-#STATIC_URL = '/static/'
+STATIC_ROOT = '/usr/share/nginx/ecgps/'
+STATIC_URL = 'http://{{inventory_hostname}}:8001/'
 
-STATIC_URL = 'http://localhost:8001/'
-
-ADMIN_MEDIA_PREFIX = 'http://127.0.0.1:8001/admin/'
+ADMIN_MEDIA_PREFIX = 'http://{{ inventory_hostname }}:8001/admin/'

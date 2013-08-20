@@ -6,6 +6,7 @@
 
 - name: Make the user an sudoer
   action: lineinfile dest=/etc/sudoers regexp="^${user_name}" line="${user_name} ALL=(ALL) ALL" state=present
+  tags: provision
 
 - name: create the project directory.
   file: group=$user_name owner=$user_name mode=755 state=directory path=$project_root
@@ -50,10 +51,3 @@
 - name: add host as to the authorized key file.
   copy: src=~/.ssh/id_rsa.pub dest=/home/$user_name/.ssh/authorized_keys
   tags: provision
-
-- name: create a downloads folder
-  file: group=${user_name} owner=${user_name} state=directory path=/home/${user_name}/downloads
-  tags: provision
-
-#- name: Change ownership of ecgps installation
-#  file: path=/home/${user_name} owner=${user_name} group=${user_name} state=directory recurse=yes

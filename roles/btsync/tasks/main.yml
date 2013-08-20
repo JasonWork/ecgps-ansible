@@ -1,0 +1,36 @@
+#Download and install btsync, helpful for people that use an IDE
+
+- name: check if btsync should be downloaded
+  shell: "[ -f ${project_root}/btsync ] && echo True || echo False"
+  register: get_btsync
+  only_if: "'$machine' == 'dev'"
+  tags: deploy, dev
+
+- name: create btsync temp folder
+  file: state=directory path=/tmp/btsync
+  only_if: "${get_btsync}"
+  tags: deploy, dev
+
+- name: download btsync
+  shell: "cd /tmp/btsync | wget ${btsync}"
+  only_if: "${get_btsync}"
+  tags: deploy, dev
+
+- name: install btsync
+  shell: tar -xvzf /tmp/btsync/btsync_*
+  only_if: "${get_btsync}"
+  tags: deploy, dev
+
+- name: create btsync folder in the users project root
+  file: state=directory path=${project_root}/btsync
+  only_if: "${get_btsync}"
+  tags: deploy, dev
+
+- name: move btsync executable inside the btsync folder
+  shell: mv /tmp/btsync/btsync ${project_root}/btsync
+  only_if: "${get_btsync}"
+  tags: deploy, dev
+
+- name: Change ownership of the btsync folder
+  file: path=${project_root}/btsync owner=${user_name} group=${user_name} state=directory recurse=yes
+  tags: deploy, dev

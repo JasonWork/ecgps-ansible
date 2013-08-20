@@ -1,0 +1,24 @@
+server {
+
+    listen   80;
+    server_name {{inventory_hostname}};
+    client_max_body_size 10m;
+
+    location ~ ^/.*\.ico {
+        root /var/www/nginx-default;
+        expires max;
+    }
+
+    location ~ ^/static{
+        root /usr/share/nginx/www/ecgps/;
+    }
+
+    #specify the log location and use custom log format
+    access_log  /var/log/nginx/ecgps.access.log timed_combined;
+
+    #static files
+    location ~ ^/.*\.html{
+        root /usr/share/nginx/www/ecgps/;
+    }
+
+}

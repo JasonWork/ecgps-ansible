@@ -13,7 +13,7 @@ admin_password: ecgps
 
 # ***** OPTIONAL, NOT REQUIRED TO CHANGE ****
 user_name: ecgps
-project_root: /home/ecgps
+project_root: /home/ecgps  #do not add a trailing '/'
 
 btsync: http://btsync.s3-website-us-east-1.amazonaws.com/btsync_x64.tar.gz
 
@@ -21,9 +21,8 @@ btsync: http://btsync.s3-website-us-east-1.amazonaws.com/btsync_x64.tar.gz
 pg_username: ecgps
 pg_database: ecgps
 
-# Unprivileged User Account (for now, don't change this username)
-aw_user: ecgps
-aw_home: /var/lib/awx
+#virutalenv directory
+env_dir: /home/ecgps/pyenv #do not add a trailing '/'
 
 # Django Options
 admin_username: admin

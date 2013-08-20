@@ -3,3 +3,6 @@
 
 - name: restart supervisor
   service: name={{sup_init_name}} state=restarted
+
+- name: restart redis-server
+  service: name=redis-server state=restarted enabled=yes
