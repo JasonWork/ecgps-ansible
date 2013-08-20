@@ -1,0 +1,36 @@
+---
+# Variables applicable to all hosts
+
+# ***** DO NOT CHANGE THESE PARAMETERS *****
+
+project_repo: git@github.com:Greenphire/ecgps.git
+branch: prod
+
+# ***** CHANGES TO THESE PARAMETERS ARE ABSOLUTELY REQUIRED *****
+
+pg_password: ecgps
+admin_password: ecgps
+
+# ***** OPTIONAL, NOT REQUIRED TO CHANGE ****
+user_name: ecgps
+project_root: /home/ecgps
+
+btsync: http://btsync.s3-website-us-east-1.amazonaws.com/btsync_x64.tar.gz
+
+# PostgreSQL Credentials
+pg_username: ecgps
+pg_database: ecgps
+
+# Unprivileged User Account (for now, don't change this username)
+aw_user: ecgps
+aw_home: /var/lib/awx
+
+# Django Options
+admin_username: admin
+admin_email: admin@example.com
+
+known_hosts:
+ - github.com
+ - sftp.greenphire.com
+
+

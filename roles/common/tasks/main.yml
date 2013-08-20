@@ -1,0 +1,59 @@
+---
+# tasks to create user
+- name: Create user.
+  user: name=$user_name state=present shell=/bin/bash
+  tags: provision
+
+- name: Make the user an sudoer
+  action: lineinfile dest=/etc/sudoers regexp="^${user_name}" line="${user_name} ALL=(ALL) ALL" state=present
+
+- name: create the project directory.
+  file: group=$user_name owner=$user_name mode=755 state=directory path=$project_root
+  tags: provision
+
+- name: Create the code directory.
+  file: group=$user_name owner=$user_name mode=755 state=directory path=$project_root/ecgps
+  tags: provision
+
+- name: Create the SSH directory.
+  file: group=$user_name owner=$user_name state=directory path=/home/$user_name/.ssh/ mode=0700
+  tags: provision
+
+- name: Create the Root SSH directory.
+  file: state=directory path=~/.ssh/ mode=0700
+  tags: provision
+
+- name: Upload Root SSH known hosts.
+  copy: src=known_hosts dest=~/.ssh/known_hosts mode=0600
+  tags: provision
+
+- name: Upload SSH known hosts.
+  copy: src=known_hosts dest=/home/$user_name/.ssh/known_hosts mode=0600
+  tags: provision
+
+- name: Upload Root SSH private key.
+  copy: src=~/.ssh/id_rsa dest=~/.ssh/id_rsa mode=0600
+  tags: provision
+
+- name: Upload SSH private key.
+  copy: src=~/.ssh/id_rsa dest=/home/$user_name/.ssh/id_rsa mode=0600
+  tags: provision
+
+- name: Upload Root SSH public key.
+  copy: src=~/.ssh/id_rsa.pub dest=~/.ssh/id_rsa.pub
+  tags: provision
+
+- name: Upload SSH public key.
+  copy: src=~/.ssh/id_rsa.pub dest=/home/$user_name/.ssh/id_rsa.pub
+  tags: provision
+
+- name: add host as to the authorized key file.
+  copy: src=~/.ssh/id_rsa.pub dest=/home/$user_name/.ssh/authorized_keys
+  tags: provision
+
+- name: create a downloads folder
+  file: group=${user_name} owner=${user_name} state=directory path=/home/${user_name}/downloads
+  tags: provision
+
+#- name: Change ownership of ecgps installation
+#  file: path=/home/${user_name} owner=${user_name} group=${user_name} state=directory recurse=yes

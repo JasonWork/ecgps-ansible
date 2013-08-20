@@ -1,0 +1,24 @@
+#Setup nginx configuration
+- name: Create the nginx directory.
+  file: state=directory path=/var/www/ecgps/nginx/
+  tags: provision, nginx
+
+- name: Create the ecgps conf file.
+  copy: src=ecgps.conf dest=/etc/nginx/sites-available
+  tags: provision, nginx
+
+- name: check if ecgps was added to sites enabled
+  shell: "[ -f /etc/nginx/sites-enabled/ecgps.conf ] && echo False || echo True"
+  register: enable_sites
+  tags: provision, nginx
+
+- name: Add ecgps to sites enabled
+  shell: ln -s /etc/nginx/sites-available/ecgps.conf /etc/nginx/sites-enabled
+  only_if: "${enable_sites}"
+  ignore_errors: True
+  tags: provision, nginx
+
+- name: Install nginx configuration file.
+  copy: src=nginx.conf dest=/var/www/ecgps/nginx/
+  notify: restart nginx
+  tags: provision, nginx

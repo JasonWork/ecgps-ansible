@@ -1,0 +1,76 @@
+import os
+
+{% if machine == 'dev' %}
+DATABASES = {
+
+'default': {
+   'ENGINE': 'django.db.backends.sqlite3',
+   'NAME': 'ecgps_dev.db',
+   'USER': '',
+   'PASSWORD': '',
+   'HOST': '',
+   'PORT': '',
+ },
+}
+
+DEBUG = True
+{% endif %}
+
+INTERNAL_IPS = ('127.0.0.1',)
+
+REDIS_HOST = 'localhost'
+
+EMAIL_PORT = 25
+EMAIL_SUBJECT_PREFIX = '[eClinical GPS Dev] '
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'ecgps@localhost'
+SERVER_EMAIL = 'ecgps@localhost'
+EMAIL_HOST = 'localhost'
+EMAIL_HOST_USER = 'ecgps'
+EMAIL_HOST_PASSWORD = ''
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/tmp/email-log'
+
+CELERY_RESULT_BACKEND = 'redis'
+CELERY_REDIS_HOST = REDIS_HOST
+CELERY_REDIS_DB = 5
+CELERY_TASK_RESULT_EXPIRES = 20
+
+MAIL_PORT = 25
+MAIL_HOST = 'localhost'
+MAIL_HOST_USER = 'ecgps@localhost'
+MAIL_HOST_PASSWORD = ''
+
+CELERY_SEND_TASK_ERROR_EMAILS = False
+
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': '127.0.0.1:6379',
+        'OPTIONS': {
+            'DB': 5,
+        },
+    },
+}
+
+USE_TZ = False
+
+WF_SFTP_PROD_SERVER = 'localhost' #'safetrans.wellsfargo.com'
+WF_SFTP_LOGIN = ''
+WF_SFTP_PASSWORD = ''
+WF_FILE_LOCATION = '/tmp/'
+
+SESSION_ENGINE = 'redis_sessions.session'
+
+BROKER_BACKEND = None
+BROKER_HOST = None
+BROKER_PORT = None
+BROKER_USER = None
+BROKER_PASSWORD = None
+BROKER_VHOST = None
+BROKER_URL = "redis://localhost:6379/2"
+
+STATIC_URL = '/static/'
+#STATIC_ROOT = "/usr/share/nginx/www/ecgps/static/"
+

@@ -1,0 +1,31 @@
+---
+# Tasks for configuring PostgreSQL server.
+
+- name: init postgresql
+  command: service postgresql initdb creates=/var/lib/pgsql/data/PG_VERSION
+  when: ansible_distribution != "Ubuntu"
+  tags: provision, postgresql
+
+- name: update postgresql authentication settings
+  template: src=pg_hba.conf.j2 dest={{pg_hba_location}} owner=postgres
+  notify: restart postgresql
+  tags: provision, postgresql
+
+- name: restart postgresql and configure to startup automatically
+  service: name=postgresql state=restarted enabled=yes
+  tags: provision, postgresql
+
+- name: wait for postgresql restart
+  command: sleep 10
+  tags: provision, postgresql
+
+- name: create the postgresql user for ecgps
+  postgresql_user: name={{pg_username}} password={{pg_password}} login_user=postgres
+  sudo_user: postgres
+  tags: provision, postgresql
+
+- name: create the postgresql database for ecgps
+  postgresql_db: name={{pg_database}} owner={{pg_username}} state=present login_user=postgres encoding='UTF-8' lc_collate='en_US.UTF-8' lc_ctype='en_US.UTF-8' template=template0
+  sudo_user: postgres
+  tags: provision, postgresql
+

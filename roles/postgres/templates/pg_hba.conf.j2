@@ -1,0 +1,10 @@
+# {{ ansible_managed }}
+# !!!Any changes made directly in this file may be overwritten!!!
+
+# Database administrative login by Unix domain socket
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+local   all             postgres                                trust
+host    all             all             127.0.0.1/32            trust

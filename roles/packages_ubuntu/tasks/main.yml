@@ -1,0 +1,20 @@
+---
+# Tasks to install required system level packages for ecgps
+
+- name: install required packages via apt
+  apt: name={{ item }}
+  with_items:
+    - vim
+    - build-essential
+    - git
+    - nginx
+    - gcc
+    - openssh-server
+    - postgresql-9.1
+    - postgresql-server-dev-9.1
+    - python-dev
+    - python-virtualenv
+    - python-pip
+    - python-psycopg2
+    - redis-server
+  tags: provision, packages

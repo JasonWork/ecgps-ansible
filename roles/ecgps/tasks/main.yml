@@ -1,0 +1,54 @@
+---
+# Tasks for installing and configuring eClinicalgps.
+
+- name: Pull the ecgps app from the github repo.
+  git: repo=$project_repo dest=$project_root/ecgps version={{branch}}
+  tags: deploy
+
+- name: Upgrade the virtualenv with dev requirements.
+  pip: requirements=${project_root}/ecgps/deps/development.txt virtualenv=${project_root}/ecgps_env extra_args='--exists-action w --allow-all-external'
+  when: ${machine} == 'dev'
+  tags: deploy, dev
+
+- name: Upgrade the virtualenv with production requirements.
+  pip: requirements=${project_root}/ecgps/deps/production.txt virtualenv=${project_root}/ecgps_env extra_args='--exists-action w --allow-all-external --log /home/ecgps/downloads/mypip_log.txt'
+  tags: deploy
+
+- name: Delete Root SSH Directory.
+  file: state=directory path=~/.ssh state=absent
+  tags: provision
+
+- name: check if local_settings.py.j2 exists
+  shell: "[ -f ${project_root}/ecgps/local_settings.py ] && echo True || echo False"
+  register: no_local_settings
+  tags: deploy, dev
+
+- name: copy over local_settings if one is needed
+  template: src=local_settings.py.j2 dest=${project_root}/ecgps/local_settings.py
+  only_if: "${no_local_settings}"
+  tags: deploy, dev
+
+- name: Sync Django database.
+  shell: $project_root/ecgps_env/bin/python $project_root/ecgps/manage.py syncdb --migrate --noinput
+  tags: deploy
+
+- name: Do Django collectstatic to grab media files .
+  shell: $project_root/ecgps_env/bin/python $project_root/ecgps/manage.py collectstatic --noinput
+  tags: deploy
+
+- name: create branch database
+  shell: ./$project_root/ecgps_env/bin/python $project_root/ecgps/create_branch_database.sh
+  when: ${machine} == 'dev'
+  tags: deploy, dev
+
+- name: Change ownership of ecgps installation
+  file: path=${project_root} owner=${user_name} group=${user_name} state=directory recurse=yes
+
+#- name: stop supervisor
+#  service: name={{sup_init_name}} state=stopped
+#  tags: depoly, supervisor
+
+#- name: start supervisor
+#  service: name={{sup_init_name}} state=started enabled=yes
+#  tags: deploy, supervisor
+
