@@ -29,8 +29,5 @@ aw_home: /var/lib/awx
 admin_username: admin
 admin_email: admin@example.com
 
-known_hosts:
- - github.com
- - sftp.greenphire.com
 
 
