@@ -1,5 +1,5 @@
-[jbrooks-dev]
-198.58.115.201 machine=dev branch=prod
+[<USER_NAME>-dev]
+<SERVER ADDRESS> machine=dev branch=prod
 
 [dev:children]
-jbrooks-dev
+<USER_NAME>-dev
