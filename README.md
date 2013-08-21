@@ -19,17 +19,17 @@ as a config file
 
 - Run this command from the directory where you cloned the repo
 
-    ansible-playbook -u root -k -i dev_servers site.yml
+        ansible-playbook -u root -k -i dev_servers site.yml
 
 - Once the playbook has finished you can ssh to the remote machine as the user defined in the 'all.yml' file
 
-- To run the ecgps app you can do
-    
-    load fixtures
-    ./create_branch_database.sh
+- To run the ecgps app you can do:
 
-    If you did not install on localhost you can:
-    ./manage.py runserver <SERVER>:8000
+        load fixtures
+        ./create_branch_database.sh
+
+        If you did not install on localhost you can:
+        ./manage.py runserver <SERVER>:8000
 
 
 NOTES
