@@ -10,7 +10,7 @@
   only_if: "'$machine' == 'dev'"
   tags: deploy, dev
 
-- name: Upgrade the virtualenv with production requirements.
+- name: Upgrade the virtualenv with prod requirements.
   pip: requirements=${project_root}/ecgps/deps/production.txt virtualenv=${env_dir}
   tags: deploy
 
@@ -41,24 +41,28 @@
   tags: deploy, dev
 
 #- name: Load fixtures
-#  django_manage: >
-#    command=loaddata
-#    app_path=${project_root}/ecgps
-#    fixtures=dev_fixtures/auth.json, dev_fixtures/bare_auth.json, dev_fixtures/bare_ecgps_core.json, dev_fixtures/bare_sites.json, dev_fixtures/ecgps_core.json, dev_fixtures/pm_core.json. dev_fixtures/sites.json
+#  django_manage: command=loaddata app_path=${project_root}/ecgps virtualenv=${env_dir}
+#                 fixtures="dev_fixtures/auth.json dev_fixtures/bare_auth.json dev_fixtures/bare_ecgps_core.json dev_fixtures/bare_sites.json dev_fixtures/ecgps_core.json dev_fixtures/pm_core.json dev_fixtures/sites.json"
 #  only_if: "'$machine' == 'dev'"
 #  ignore_errors: True
 #  tags: deploy, dev
 
-- name: copy load fixtures script.
-  template: src=load_fixtures.py.j2 dest=/tmp/load_fixtures.py
-  only_if: "'$machine' == 'dev'"
-  tags: deploy, dev
+#- name: Load fixtures
+#  command: ${project_root}/ecgps/create_branch_database.sh
+#  only_if: "'$machine' == 'dev'"
+#  ignore_errors: True
+#  tags: deploy, dev
 
-- name: Load fixtures.
-  shell: /usr/bin/python /tmp/load_fixtures.py
-  only_if: "'$machine' == 'dev'"
-  ignore_errors: True
-  tags: deploy, dev
+#- name: Copy load fixtures script.
+#  template: src=load_fixtures.py.j2 dest=/tmp/load_fixtures.py
+#  only_if: "'$machine' == 'dev'"
+#  tags: deploy, dev
+
+#- name: Load fixtures.
+#  shell: /usr/bin/python /tmp/load_fixtures.py
+#  only_if: "'$machine' == 'dev'"
+#  ignore_errors: True
+#  tags: deploy, dev
 
 - name: Change ownership of ecgps installation
   file: path=${project_root} owner=${user_name} group=${user_name} state=directory recurse=yes

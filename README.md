@@ -7,20 +7,28 @@ provision, configure, and deploy ecgps using ansible
 SETUP
 =====
 
-- install ansible
+- Install ansible
    - sudo pip install ansible
    - sudo apt-get install ansible
    - other methods - http://www.ansibleworks.com/docs/gettingstarted.html
 
-- update the file 'dev_servers' with a user name and the address of the remote machine
+- Update the file 'dev_servers' with a user name and the address of the remote machine
 
-- optionally update the file 'all.yml' in the 'group_vars' directory. You should at least review this file as it acts
+- Optionally update the file 'all.yml' in the 'group_vars' directory. You should at least review this file as it acts
 as a config file
 
-EXAMPLE
-=======
+- Run this command from the directory where you cloned the repo
+    ansible-playbook -u root -k -i dev_servers site.yml
 
-- ansible-playbook -u root -k -i dev_servers site.yml
+- Once the playbook has finished you can ssh to the remote machine as the user defined in the 'all.yml' file
+
+- To run the ecgps app you can do:
+
+    load fixtures
+    ./create_branch_database.sh
+
+    If you did not install on localhost you can:
+    ./manage.py runserver <SERVER>:8000
 
 
 NOTES
