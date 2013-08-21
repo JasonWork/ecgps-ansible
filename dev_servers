@@ -1,5 +1,5 @@
-[<USER_NAME>-dev]
-<REMOTE_MACHINE_ADDR> machine=dev branch=prod
+[jbrooks-dev]
+198.58.115.201 machine=dev branch=prod
 
 [dev:children]
-<USER_NAME>-dev
+jbrooks-dev
