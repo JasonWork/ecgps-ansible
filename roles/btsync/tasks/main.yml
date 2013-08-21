@@ -1,7 +1,7 @@
 #Download and install btsync, helpful for people that use an IDE
 
 - name: check if btsync should be downloaded
-  shell: "[ -f ${project_root}/btsync ] && echo True || echo False"
+  shell: "[ -f ${project_root}/btsync/btsync ] && echo False || echo True"
   register: get_btsync
   only_if: "'$machine' == 'dev'"
   tags: deploy, dev
@@ -12,13 +12,9 @@
   tags: deploy, dev
 
 - name: download btsync
-  shell: "cd /tmp/btsync | wget ${btsync}"
+  command: wget ${btsync} chdir=/tmp/btsync
   only_if: "${get_btsync}"
-  tags: deploy, dev
-
-- name: install btsync
-  shell: tar -xvzf /tmp/btsync/btsync_*
-  only_if: "${get_btsync}"
+  ignore_errors: True
   tags: deploy, dev
 
 - name: create btsync folder in the users project root
@@ -26,9 +22,10 @@
   only_if: "${get_btsync}"
   tags: deploy, dev
 
-- name: move btsync executable inside the btsync folder
-  shell: mv /tmp/btsync/btsync ${project_root}/btsync
+- name: install btsync
+  command: tar -C ${project_root}/btsync -xvzf ${btsync_tar_file} chdir=/tmp/btsync
   only_if: "${get_btsync}"
+  ignore_errors: True
   tags: deploy, dev
 
 - name: Change ownership of the btsync folder

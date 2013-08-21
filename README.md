@@ -14,7 +14,8 @@ SETUP
 
 - update the file 'dev_servers' with a user name and the address of the remote machine
 
-- optionally update the file 'all.yml' in the 'group_vars' directory
+- optionally update the file 'all.yml' in the 'group_vars' directory. You should at least review this file as it acts
+as a config file
 
 EXAMPLE
 =======

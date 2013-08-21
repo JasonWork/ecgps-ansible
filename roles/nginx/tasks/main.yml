@@ -23,6 +23,6 @@
   tags: provision, nginx
 
 - name: Install nginx configuration file.
-  copy: src=nginx.conf dest=/var/www/ecgps/nginx/
+  copy: src=nginx.conf dest=/var/www/ecgps/nginx/ force=yes
   notify: restart nginx
   tags: provision, nginx

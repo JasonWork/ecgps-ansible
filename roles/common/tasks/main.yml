@@ -48,6 +48,11 @@
   copy: src=~/.ssh/id_rsa.pub dest=/home/$user_name/.ssh/id_rsa.pub
   tags: provision
 
-- name: add host as to the authorized key file.
+- name: add host to the authorized key file.
   copy: src=~/.ssh/id_rsa.pub dest=/home/$user_name/.ssh/authorized_keys
   tags: provision
+
+- name: create .bash_profile
+  template: src=bash_profile.j2 dest=${project_root}/.bash_profile
+  only_if: "'$machine' == 'dev'"
+  tags: provision, dev

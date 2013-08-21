@@ -65,8 +65,9 @@
   tags: deploy, dev
 
 #- name: Run django runserver
-#  shell: ${env_dir}/bin/python ${project_root}/ecgps/manage.py runserver {{inventory_hostname}}:8000
+#  shell: nohup ${env_dir}/bin/python ${project_root}/ecgps/manage.py runserver {{ inventory_hostname }}:8000 &
 #  only_if: "'$machine' == 'dev'"
+#  ignore_errors: True
 #  tags: deploy, dev
 
 #- name: stop supervisor

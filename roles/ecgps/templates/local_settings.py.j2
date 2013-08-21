@@ -60,6 +60,13 @@ MAIL_HOST_PASSWORD = ''
 
 CELERY_SEND_TASK_ERROR_EMAILS = False
 
+{% if machine == 'dev' %}
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+}
+{% else %}
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
@@ -69,6 +76,7 @@ CACHES = {
         },
     },
 }
+{% endif %}
 
 USE_TZ = False
 
@@ -85,9 +93,9 @@ BROKER_PORT = None
 BROKER_USER = None
 BROKER_PASSWORD = None
 BROKER_VHOST = None
-BROKER_URL = "redis://{{ inventory_hostname }}:6379/2"
+BROKER_URL = "redis://{{ inventory_hostname }}"
 
-STATIC_ROOT = '/usr/share/nginx/ecgps/'
+STATIC_ROOT = '/usr/share/nginx/www/ecgps'
 STATIC_URL = 'http://{{inventory_hostname}}:8001/'
 
 ADMIN_MEDIA_PREFIX = 'http://{{ inventory_hostname }}:8001/admin/'

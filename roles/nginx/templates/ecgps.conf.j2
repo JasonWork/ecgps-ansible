@@ -14,11 +14,15 @@ server {
     }
 
     #specify the log location and use custom log format
-    access_log  /var/log/nginx/ecgps.access.log timed_combined;
-
+    access_log  /var/log/nginx/ecgps.access.log;
+    {% if machine == 'dev' %}
+    listen 8001;
+    root /usr/share/nginx/www/ecgps;
+    {% else %}
     #static files
     location ~ ^/.*\.html{
         root /usr/share/nginx/www/ecgps/;
     }
+    {% endif %}
 
 }

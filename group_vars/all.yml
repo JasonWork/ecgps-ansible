@@ -16,13 +16,14 @@ user_name: ecgps
 project_root: /home/ecgps  #do not add a trailing '/'
 
 btsync: http://btsync.s3-website-us-east-1.amazonaws.com/btsync_x64.tar.gz
+btsync_tar_file: btsync_x64.tar.gz
 
 # PostgreSQL Credentials
 pg_username: ecgps
 pg_database: ecgps
 
 #virutalenv directory
-env_dir: /home/ecgps/pyenv #do not add a trailing '/'
+env_dir: /home/ecgps/pyenv/ecgps #do not add a trailing '/'
 
 # Django Options
 admin_username: admin
