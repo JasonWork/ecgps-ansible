@@ -28,6 +28,11 @@
   ignore_errors: True
   tags: deploy, dev
 
+- name: copy btsync default config
+  template: src=btsync.j2 dest=${project_root}/.btsync
+  only_if: "'$machine' == 'dev'"
+  tags: deploy, dev
+
 - name: Change ownership of the btsync folder
   file: path=${project_root}/btsync owner=${user_name} group=${user_name} state=directory recurse=yes
   tags: deploy, dev

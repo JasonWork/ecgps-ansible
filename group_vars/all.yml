@@ -15,8 +15,9 @@ admin_password: ecgps
 user_name: ecgps
 project_root: /home/ecgps  #do not add a trailing '/'
 
-btsync: http://btsync.s3-website-us-east-1.amazonaws.com/btsync_x64.tar.gz
+btsync: http://syncapp.bittorrent.com/UIOHDEKHU/btsync_x64-1.1.48.tar.gz
 btsync_tar_file: btsync_x64.tar.gz
+btsync_secret_key: ANSIBLE WILL PROMPT FOR THIS
 
 # PostgreSQL Credentials
 pg_username: ecgps
