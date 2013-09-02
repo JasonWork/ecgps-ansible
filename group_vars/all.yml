@@ -1,23 +1,24 @@
 ---
-# Variables applicable to all hosts
+# Variables applicable to all dev_hosts
 
 # ***** DO NOT CHANGE THESE PARAMETERS *****
-
 project_repo: git@github.com:Greenphire/ecgps.git
 branch: prod
 
-# ***** CHANGES TO THESE PARAMETERS ARE ABSOLUTELY REQUIRED *****
+backup_db_file: ecgps_prod_db_sanitized.sql.gz
+btsync_read_only_key: GET_PASSWORD
 
-pg_password: ecgps
+# ***** CHANGES TO THESE PARAMETERS ARE ABSOLUTELY REQUIRED *****
+pg_password:
 admin_password: ecgps
 
 # ***** OPTIONAL, NOT REQUIRED TO CHANGE ****
-user_name: ecgps
+email_address: jason.brooks@greephire.com #used for notifications
+user_name: ecgps #remote host user to create
 project_root: /home/ecgps  #do not add a trailing '/'
 
 btsync: http://syncapp.bittorrent.com/UIOHDEKHU/btsync_x64-1.1.48.tar.gz
-btsync_tar_file: btsync_x64.tar.gz
-btsync_secret_key: ANSIBLE WILL PROMPT FOR THIS
+btsync_tar_file: btsync_x64-1.1.48.tar.gz
 
 # PostgreSQL Credentials
 pg_username: ecgps
@@ -29,6 +30,8 @@ env_dir: /home/ecgps/pyenv/ecgps #do not add a trailing '/'
 # Django Options
 admin_username: admin
 admin_email: admin@example.com
+
+
 
 
 

@@ -1,10 +1,15 @@
 #Setup nginx configuration
+- name: Pip install gunicorn
+  pip: name=gunicorn virtualenv=${env_dir}
+  only_if: "'$machine' == 'dev'"
+  tags: provision, dev, gunicorn
+
 - name: Create the nginx directory.
-  file: state=directory path=/var/www/ecgps/nginx/
+  file: state=directory path=/var/www/ecgps/nginx/ group=$user_name owner=$user_name
   tags: provision, nginx
 
 - name: Create the ecgps conf file.
-  template: src=ecgps.conf.j2 dest=/etc/nginx/sites-available/ecgps.conf
+  template: src=ecgps.conf.j2 dest=/etc/nginx/sites-available/ecgps.conf group=$user_name owner=$user_name
   tags: provision, nginx
 
 - name: copy ecgps.conf file to the conf.d directory.
@@ -22,7 +27,16 @@
   ignore_errors: True
   tags: provision, nginx
 
+- name: add gunicorn wsgi file.
+  copy: src=wsgi.py dest=${project_root} group=$user_name owner=$user_name force=yes
+  tags: provision, dev, gunicorn
+
 - name: Install nginx configuration file.
-  copy: src=nginx.conf dest=/var/www/ecgps/nginx/ force=yes
+  copy: src=nginx.conf dest=/var/www/ecgps/nginx/ group=$user_name owner=$user_name force=yes
   notify: restart nginx
   tags: provision, nginx
+
+#- name: Email notification
+#  local_action: mail subject="ecgps on {{ inventory_hostname }} has been provisioned" from="noreply@localhost" to="{{ email_address }}" body="You can ssh to {{ inventory_hostname }} as {{ user_name }} and go to http://{{ inventory_hostname }}"
+#  ignore_errors: True
+#  tags: provision

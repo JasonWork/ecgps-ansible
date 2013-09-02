@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+echo "DROP DATABASE IF EXISTS {{ pg_database }};" | psql -U postgres
+echo "CREATE DATABASE {{ pg_database }} OWNER {{ pg_username }} ENCODING 'UTF-8' LC_COLLATE 'en_US.UTF-8' LC_CTYPE 'en_US.UTF-8' TEMPLATE template0;" | psql -U postgres
+
+gunzip < /tmp/{{ backup_db_file }} > /tmp/prod_db_sanitized.sql
+psql -d {{ pg_database }} -U postgres -f /tmp/prod_db_sanitized.sql
+
+rm /tmp/prod_db_sanitized.sql

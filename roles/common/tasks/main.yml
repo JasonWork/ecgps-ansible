@@ -24,11 +24,11 @@
   file: state=directory path=~/.ssh/ mode=0700
   tags: provision
 
-- name: Upload Root SSH known hosts.
+- name: Upload Root SSH known dev_hosts.
   copy: src=known_hosts dest=~/.ssh/known_hosts mode=0600
   tags: provision
 
-- name: Upload SSH known hosts.
+- name: Upload SSH known dev_hosts.
   copy: src=known_hosts dest=/home/$user_name/.ssh/known_hosts mode=0600
   tags: provision
 
@@ -56,3 +56,4 @@
   template: src=bash_profile.j2 dest=${project_root}/.bash_profile
   only_if: "'$machine' == 'dev'"
   tags: provision, dev
+

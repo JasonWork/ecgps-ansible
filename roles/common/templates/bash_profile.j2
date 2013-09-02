@@ -6,9 +6,11 @@ PATH=$PATH:$HOME/bin
 
 export PATH
 
+export PYTHONPATH=$PYTHONPATH:{{ project_root }}
+
 source {{ env_dir }}/bin/activate
 
 alias ls='ls -rtlh --color=auto'
 
-export PS1='\n\e[32;48;1m\w\e[0m \e[31;48;1m\A \j job(s) \e[0m \n\e[31;48;1m{{ user_name }} dev\e[0m \e[0;32;1m \e[m \n $ '
+export PS1='\n\e[32;48;1m\w\e[0m \e[31;48;1m\A \j job(s) \e[0m \n\e[31;48;1m{{ inventory_hostname }} dev\e[0m \e[0;32;1m \e[m \n $ '
 

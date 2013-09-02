@@ -1,8 +1,8 @@
 {
-  "device_name": "{{ user_name }} Device",
+  "device_name": "{{ inventory_hostname }}",
   "listening_port" : 0,
 
-  "storage_path" : "{{ project_root }}.sync",
+  "storage_path" : "{{ project_root }}/.sync",
 
 
   "check_for_updates" : true,
@@ -21,8 +21,8 @@
   "shared_folders" :
   [
     {
-      "secret" : "{{ btsync_secret_key }}",
-      "dir" : "{{ project_root }}",
+      "secret" : "{{ btsync_read_only_key }}",
+      "dir" : "/tmp",
       "use_relay_server" : false,
       "use_tracker" : true,
       "use_dht" : false,

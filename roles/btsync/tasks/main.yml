@@ -28,11 +28,33 @@
   ignore_errors: True
   tags: deploy, dev
 
-- name: copy btsync default config
+- name: copy btsync default conf file
   template: src=btsync.j2 dest=${project_root}/.btsync
   only_if: "'$machine' == 'dev'"
   tags: deploy, dev
 
 - name: Change ownership of the btsync folder
   file: path=${project_root}/btsync owner=${user_name} group=${user_name} state=directory recurse=yes
+  tags: deploy, dev
+
+- name: kill any current running btsync process
+  shell: "sudo killall btsync"
+  only_if: "'$machine' == 'dev'"
+  ignore_errors: True
+  tags: deploy, dev
+
+- name: start btsync
+  command: ${project_root}/btsync/btsync --config ${project_root}/.btsync
+  only_if: "'$machine' == 'dev'"
+  ignore_errors: True
+  tags: deploy, dev
+
+- name: Setup btsync cronjob
+  cron: name="ensure btysnc is running" user="${user_name}" job="${project_root}/btsync/btsync --config ${project_root}/.btsync"
+  only_if: "'$machine' == 'dev'"
+  ignore_errors: True
+  tags: deploy, dev
+
+- name: wait for btysnc to sync the prod dump folder
+  command: sleep 60
   tags: deploy, dev

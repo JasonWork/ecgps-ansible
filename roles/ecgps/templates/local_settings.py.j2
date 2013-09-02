@@ -8,14 +8,14 @@ DATABASES = {
         'NAME': '{{ pg_database }}',
         'USER': '{{ pg_username }}',
         'PASSWORD': '{{ pg_password }}',
-        'HOST': '{{ inventory_hostname }}',
+        'HOST': 'localhost',
         'PORT': '5432',
     },
 
 }
 
 
-{% if machine == 'dev' %}
+{% if machine == 'localhost-dev' %}
 DATABASES = {
 
 'default': {
@@ -33,15 +33,15 @@ DEBUG = True
 
 #INTERNAL_IPS = ('127.0.0.1',)
 
-REDIS_HOST = '{{ inventory_hostname }}'
-MONGO_HOST = '{{ inventory_hostname }}'
+REDIS_HOST = 'localhost'
+MONGO_HOST = 'localhost'
 
 EMAIL_PORT = 25
 EMAIL_SUBJECT_PREFIX = '[eClinical GPS Dev] '
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'ecgps@{{ inventory_hostname }}'
-SERVER_EMAIL = 'ecgps@{{ inventory_hostname }}'
-EMAIL_HOST = '{{ inventory_hostname }}'
+DEFAULT_FROM_EMAIL = 'ecgps@localhost'
+SERVER_EMAIL = 'ecgps@localhost'
+EMAIL_HOST = 'localhost'
 EMAIL_HOST_USER = 'ecgps'
 EMAIL_HOST_PASSWORD = ''
 
@@ -70,7 +70,7 @@ CACHES = {
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': '{{ inventory_hostname }}:6379',
+        'LOCATION': '127.0.0.1:6379',
         'OPTIONS': {
             'DB': 5,
         },
@@ -80,7 +80,7 @@ CACHES = {
 
 USE_TZ = False
 
-WF_SFTP_PROD_SERVER = '{{ inventory_hostname }}' #'safetrans.wellsfargo.com'
+WF_SFTP_PROD_SERVER = 'localhost' #'safetrans.wellsfargo.com'
 WF_SFTP_LOGIN = ''
 WF_SFTP_PASSWORD = ''
 WF_FILE_LOCATION = '/tmp/'
@@ -93,9 +93,8 @@ BROKER_PORT = None
 BROKER_USER = None
 BROKER_PASSWORD = None
 BROKER_VHOST = None
-BROKER_URL = "redis://{{ inventory_hostname }}"
+BROKER_URL = "redis://localhost:6379/2"
 
 STATIC_ROOT = '/usr/share/nginx/www/ecgps'
-STATIC_URL = 'http://{{inventory_hostname}}:8001/'
-
+STATIC_URL = 'http://{{ inventory_hostname }}:8001/'
 ADMIN_MEDIA_PREFIX = 'http://{{ inventory_hostname }}:8001/admin/'

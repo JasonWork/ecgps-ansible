@@ -2,7 +2,7 @@
 # Tasks to install required system level packages for ecgps
 
 - name: install required packages via apt
-  apt: name={{ item }}
+  apt: update_cache=yes name={{ item }}
   with_items:
     - vim
     - build-essential

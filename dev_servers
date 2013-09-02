@@ -1,5 +1,0 @@
-[<USER_NAME>-dev]
-<SERVER ADDRESS> machine=dev branch=prod
-
-[dev:children]
-<USER_NAME>-dev

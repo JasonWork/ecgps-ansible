@@ -16,16 +16,34 @@
 
 - name: Delete Root SSH Directory.
   file: state=directory path=~/.ssh state=absent
+  only_if: "'$machine' == 'dev'"
   tags: provision
 
-- name: check if local_settings.py.j2 exists
+- name: Check if local_settings.py.j2 exists
   shell: "[ -f ${project_root}/ecgps/local_settings.py ] && echo True || echo False"
   register: no_local_settings
+  only_if: "'$machine' == 'dev'"
   tags: deploy, dev
 
-- name: copy over local_settings if one is needed
+- name: Copy over local_settings if one is needed
   template: src=local_settings.py.j2 dest=${project_root}/ecgps/local_settings.py
   only_if: "${no_local_settings}"
+  tags: deploy, dev
+
+- name: check if the load prod db script exists
+  shell: "[ -f ${project_root}/load_sanitized_data.sh ] && echo False || echo True"
+  register: load_prod
+  tags: deploy, dev
+
+- name: create .bash_profile
+  template: src=load_sanitized_data.sh.j2 dest=${project_root}/load_sanitized_data.sh mode=0700
+  only_if: "'$machine' == 'dev'"
+  tags: provision, dev
+
+- name: load postgres database with sanitized prod data...could take a while
+  command: "${project_root}/load_sanitized_data.sh"
+  only_if: "${load_prod}"
+  ignore_errors: True
   tags: deploy, dev
 
 - name: Sync Django database.
@@ -36,43 +54,13 @@
   shell: ${env_dir}/bin/python $project_root/ecgps/manage.py collectstatic --noinput
   tags: deploy
 
-- name: start redis-server
+- name: Start redis-server
   action: service name=redis-server state=started enabled=yes
   tags: deploy, dev
-
-#- name: Load fixtures
-#  django_manage: command=loaddata app_path=${project_root}/ecgps virtualenv=${env_dir}
-#                 fixtures="dev_fixtures/auth.json dev_fixtures/bare_auth.json dev_fixtures/bare_ecgps_core.json dev_fixtures/bare_sites.json dev_fixtures/ecgps_core.json dev_fixtures/pm_core.json dev_fixtures/sites.json"
-#  only_if: "'$machine' == 'dev'"
-#  ignore_errors: True
-#  tags: deploy, dev
-
-#- name: Load fixtures
-#  command: ${project_root}/ecgps/create_branch_database.sh
-#  only_if: "'$machine' == 'dev'"
-#  ignore_errors: True
-#  tags: deploy, dev
-
-#- name: Copy load fixtures script.
-#  template: src=load_fixtures.py.j2 dest=/tmp/load_fixtures.py
-#  only_if: "'$machine' == 'dev'"
-#  tags: deploy, dev
-
-#- name: Load fixtures.
-#  shell: /usr/bin/python /tmp/load_fixtures.py
-#  only_if: "'$machine' == 'dev'"
-#  ignore_errors: True
-#  tags: deploy, dev
 
 - name: Change ownership of ecgps installation
   file: path=${project_root} owner=${user_name} group=${user_name} state=directory recurse=yes
   tags: deploy, dev
-
-#- name: Run django runserver
-#  shell: nohup ${env_dir}/bin/python ${project_root}/ecgps/manage.py runserver {{ inventory_hostname }}:8000 &
-#  only_if: "'$machine' == 'dev'"
-#  ignore_errors: True
-#  tags: deploy, dev
 
 #- name: stop supervisor
 #  service: name={{sup_init_name}} state=stopped

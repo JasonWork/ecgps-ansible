@@ -1,28 +1,24 @@
+# Gunicorn server
+upstream django {
+  server         http://127.0.0.1:9000;
+}
+
 server {
 
-    listen   80;
-    server_name {{inventory_hostname}};
+    server_name {{ inventory_hostname }};
     client_max_body_size 10m;
 
-    location ~ ^/.*\.ico {
-        root /var/www/nginx-default;
-        expires max;
+    location ~ ^/static/{
+        root /usr/share/nginx/www/ecgps;
     }
 
-    location ~ ^/static{
-        root /usr/share/nginx/www/ecgps/;
+    location / {
+        proxy_pass http://127.0.0.1:9999;
     }
 
-    #specify the log location and use custom log format
-    access_log  /var/log/nginx/ecgps.access.log;
-    {% if machine == 'dev' %}
-    listen 8001;
-    root /usr/share/nginx/www/ecgps;
-    {% else %}
-    #static files
-    location ~ ^/.*\.html{
-        root /usr/share/nginx/www/ecgps/;
+    location = /favicon.ico {
+        #empty gif
+        return 204;
     }
-    {% endif %}
 
 }

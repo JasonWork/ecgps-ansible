@@ -1,9 +1,8 @@
 ---
 # This master playbook deploys the ECGPS application to a single server.
-
 - hosts: all
   tasks:
-    - name: group hosts by distribution
+    - name: group dev_hosts by distribution
       group_by: key="{{ ansible_distribution }}-{{ ansible_distribution_version }}"
 
 - hosts: RedHat-6*:CentOS-6*:SL-6*
@@ -12,8 +11,8 @@
     - { role: packages_el6 }
     - { role: common }
     - { role: postgres, pg_hba_location: "/var/lib/pgsql/data/pg_hba.conf" }
-    - { role: ecgps }
     - { role: btsync }
+    - { role: ecgps }
     #- { role: supervisor, sup_init_name: "supervisord", sup_conf_location: "/etc/supervisord.conf" }
     - { role: nginx }
 
@@ -23,21 +22,20 @@
     - { role: packages_fedora }
     - { role: common }
     - { role: postgres, pg_hba_location: "/var/lib/pgsql/data/pg_hba.conf" }
-    - { role: ecgps }
     - { role: btsync }
+    - { role: ecgps }
     #- { role: supervisor, sup_init_name: "supervisord", sup_conf_location: "/etc/supervisord.conf" }
     - { role: nginx }
 
 - hosts: Ubuntu-12*:Ubuntu-13*
-  user: root
+  user: vagrant
   roles:
     - { role: packages_ubuntu }
     - { role: common }
     - { role: postgres, pg_hba_location: "/etc/postgresql/9.1/main/pg_hba.conf" }
-    - { role: ecgps }
     - { role: btsync }
+    - { role: ecgps }
     - { role: nginx }
     #- { role: supervisor, sup_init_name: "supervisor", sup_conf_location: "/etc/supervisor/conf.d/awx.conf" }
 
-#- include: dev_servers
-#- include: prod_servers.yml
+
