@@ -10,5 +10,4 @@ jbrooks-dev
 
 [targets]
 127.0.0.1               ansible_connection=ssh  ansible_ssh_port=2200  ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
-localhost               ansible_connection=ssh
 198.58.115.201          ansible_connection=ssh  ansible_ssh_user=root
