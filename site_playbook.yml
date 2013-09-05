@@ -5,6 +5,16 @@
     - name: group dev_hosts by distribution
       group_by: key="{{ ansible_distribution }}-{{ ansible_distribution_version }}"
 
+- hosts: Ubuntu-12*:Ubuntu-13*
+  user: root
+  roles:
+    - { role: packages_ubuntu }
+    - { role: common }
+    - { role: postgres, pg_hba_location: "/etc/postgresql/9.1/main/pg_hba.conf" }
+    - { role: btsync }
+    - { role: ecgps }
+    - { role: nginx }
+
 - hosts: RedHat-6*:CentOS-6*:SL-6*
   user: root
   roles:
@@ -13,7 +23,6 @@
     - { role: postgres, pg_hba_location: "/var/lib/pgsql/data/pg_hba.conf" }
     - { role: btsync }
     - { role: ecgps }
-    #- { role: supervisor, sup_init_name: "supervisord", sup_conf_location: "/etc/supervisord.conf" }
     - { role: nginx }
 
 - hosts: Fedora-*
@@ -24,18 +33,8 @@
     - { role: postgres, pg_hba_location: "/var/lib/pgsql/data/pg_hba.conf" }
     - { role: btsync }
     - { role: ecgps }
-    #- { role: supervisor, sup_init_name: "supervisord", sup_conf_location: "/etc/supervisord.conf" }
     - { role: nginx }
 
-- hosts: Ubuntu-12*:Ubuntu-13*
-  user: vagrant
-  roles:
-    - { role: packages_ubuntu }
-    - { role: common }
-    - { role: postgres, pg_hba_location: "/etc/postgresql/9.1/main/pg_hba.conf" }
-    - { role: btsync }
-    - { role: ecgps }
-    - { role: nginx }
-    #- { role: supervisor, sup_init_name: "supervisor", sup_conf_location: "/etc/supervisor/conf.d/awx.conf" }
+
 
 

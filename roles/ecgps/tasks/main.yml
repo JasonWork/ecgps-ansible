@@ -62,11 +62,5 @@
   file: path=${project_root} owner=${user_name} group=${user_name} state=directory recurse=yes
   tags: deploy, dev
 
-#- name: stop supervisor
-#  service: name={{sup_init_name}} state=stopped
-#  tags: depoly, supervisor
 
-#- name: start supervisor
-#  service: name={{sup_init_name}} state=started enabled=yes
-#  tags: deploy, supervisor
 

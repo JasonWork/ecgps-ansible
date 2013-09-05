@@ -3,12 +3,12 @@
 
 [jbrooks-dev]
 localhost machine=dev branch=prod
-my_dev_ip machine=dev branch=prod
+198.58.115.201 machine=dev branch=prod
 
 [dev:children]
 jbrooks-dev
 
 [targets]
-127.0.0.1              ansible_connection=ssh  ansible_ssh_port=2200  ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
-localhost              ansible_connection=ssh
-my_dev_ip              ansible_connection=ssh  ansible_ssh_user=root
+127.0.0.1               ansible_connection=ssh  ansible_ssh_port=2200  ansible_ssh_user=vagrant ansible_ssh_pass=vagrant
+localhost               ansible_connection=ssh
+198.58.115.201          ansible_connection=ssh  ansible_ssh_user=root
