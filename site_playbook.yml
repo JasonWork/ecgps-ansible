@@ -6,7 +6,7 @@
       group_by: key="{{ ansible_distribution }}-{{ ansible_distribution_version }}"
 
 - hosts: Ubuntu-12*:Ubuntu-13*
-  user: root
+  user: vagrant
   roles:
     - { role: packages_ubuntu }
     - { role: common }

@@ -2,7 +2,7 @@
 127.0.0.1 machine=dev branch=prod
 
 [jbrooks-dev]
-localhost machine=dev branch=prod
+vagrant machine=dev branch=prod
 198.58.115.201 machine=dev branch=prod
 
 [dev:children]
